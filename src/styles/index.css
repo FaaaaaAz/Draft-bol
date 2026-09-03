@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Color del anillo de foco. Las secciones oscuras lo cambian a amarillo
+       para mantener contraste visible sobre negro. */
+    --anillo: #101010;
+    color-scheme: light;
+  }
+
+  .seccion-clara {
+    --anillo: #101010;
+  }
+
+  .seccion-oscura {
+    --anillo: #f4c500;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-hueso font-sans text-negro antialiased;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--anillo);
+    outline-offset: 2px;
+  }
+
+  /* Cifras tabulares sobre la display: el numero de dorsal / reloj de carrera. */
+  .cifra {
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  ::selection {
+    background-color: #f4c500;
+    color: #101010;
+  }
+}
+
+@layer components {
+  .contenedor {
+    @apply mx-auto w-full max-w-contenido px-5 sm:px-8;
+  }
+
+  .enlace-subrayado {
+    @apply underline decoration-amarillo decoration-2 underline-offset-4 hover:decoration-negro;
+  }
+}
+
+/* Unico momento de animacion del sitio: la entrada orquestada del hero.
+   La franja amarilla entra deslizandose y el bloque de texto sube con ella. */
+@keyframes franja-entra {
+  from {
+    transform: translate3d(-104%, 0, 0) rotate(-6deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(-6deg);
+  }
+}
+
+@keyframes hero-sube {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.franja-entra {
+  transform: rotate(-6deg);
+  animation: franja-entra 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-sube {
+  animation: hero-sube 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .franja-entra,
+  .hero-sube {
+    animation: none;
+    opacity: 1;
+    transform: rotate(-6deg);
+  }
+
+  .hero-sube {
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Flecha del <select>, dibujada como fondo para no depender de los estilos
+   nativos del sistema. */
+.select-flecha {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%234A4A46' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
+}
